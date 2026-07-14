@@ -305,7 +305,7 @@ function Nav({ active }) {
 /*  Hero                                                                */
 /* ------------------------------------------------------------------ */
 function Hero() {
-  const typed = useTyping(["Data Analyst", "BI Developer", "Data Engineer (learning)"]);
+  const typed = useTyping(["Data-Analyst", "BI Developer", "Data Engineer (learning)"]);
   const spotRef = useRef(null);
 
   return (
