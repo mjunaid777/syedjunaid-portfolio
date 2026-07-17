@@ -6,6 +6,7 @@ import {
   Database, Braces, BarChart3, Workflow, Menu, X, ChevronRight, Award, 
   CheckCircle2, Send, Terminal, Layers, Sparkles, Calendar, Briefcase
 } from "lucide-react";
+
 // --- CUSTOM BRAND ICONS ---
 const Github = ({ size = 24, className = "" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -21,7 +22,7 @@ const Linkedin = ({ size = 24, className = "" }) => (
     <circle cx="4" cy="4" r="2" />
   </svg>
 );
-// --------------------------
+
 /* ------------------------------------------------------------------ */
 /*  Fonts                                                              */
 /* ------------------------------------------------------------------ */
@@ -142,7 +143,6 @@ const PROJECTS = [
     ],
     github: "https://github.com/mjunaid777/enterprise-aml-data-platform",
     image: "/dashboard preview.png"
-  
   },
   {
     id: "ai-support",
@@ -187,14 +187,14 @@ const PROJECTS = [
       "Ensured zero-latency reporting for daily review."
     ],
     github: "https://github.com/mjunaid777",
-    image: "automated report by python.png"
+    image: "/automated report by python.png"
   },
 ];
 
 const CERTIFICATIONS = [
-  { title: "Business Analysis Basics", issuer: "Simplilearn", date: "July 2026", code: "10463448" },
-  { title: "Power BI for Beginners", issuer: "Simplilearn", date: "September 2025", code: "8961596" },
-  { title: "Python for Data Analysis", issuer: "Simplilearn", date: "September 2025", code: "8956616" },
+  { title: "Business Analysis Basics", issuer: "Simplilearn", date: "July 2026", code: "10463448", file: "/business_analysis_basics.png" },
+  { title: "Power BI for Beginners", issuer: "Simplilearn", date: "September 2025", code: "8961596", file: "/power_bi_for_beginners.png" },
+  { title: "Python for Data Analysis", issuer: "Simplilearn", date: "September 2025", code: "8956616", file: "/python_for_data_analysis.png" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -216,7 +216,7 @@ function SectionLabel({ children }) {
   );
 }
 
-function GlowCard({ children, className = "" }) {
+function GlowCard({ children, className = "", onClick = null }) {
   const cardRef = useRef(null);
   const onMove = (e) => {
     const el = cardRef.current;
@@ -229,6 +229,7 @@ function GlowCard({ children, className = "" }) {
     <div
       ref={cardRef}
       onMouseMove={onMove}
+      onClick={onClick}
       className={`relative rounded-2xl border border-white/10 bg-[#120a1c]/80 backdrop-blur-xl overflow-hidden group ${className}`}
     >
       <div
@@ -305,7 +306,7 @@ function Nav({ active }) {
 /*  Hero                                                                */
 /* ------------------------------------------------------------------ */
 function Hero() {
-  const typed = useTyping(["Data-Analyst", "BI Developer", "Data Engineer (learning)"]);
+  const typed = useTyping(["Data Analyst", "BI Developer", "Data Engineer (learning)"]);
   const spotRef = useRef(null);
 
   return (
@@ -355,7 +356,7 @@ function Hero() {
         <Reveal delay={0.25}>
           <div className="flex flex-wrap gap-4 mb-16">
             <a
-              href="/Syed_Junaid_Resume_ATS_Optimized.pdf"
+              href="/Syed_Junaid_Resume.pdf"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-purple-600 text-white font-medium hover:bg-purple-500 transition-colors shadow-lg shadow-purple-600/30"
@@ -371,7 +372,7 @@ function Hero() {
               <Github size={16} /> GitHub
             </a>
             <a
-              href="https://www.linkedin.com/in/syed-junaid-8657113b1/"
+              href="https://www.linkedin.com/in/syed-junaid7"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/15 hover:bg-white/[0.05] transition-colors font-medium text-zinc-300"
@@ -528,7 +529,7 @@ function Experience() {
               </li>
               <li className="flex items-start gap-3 text-sm text-zinc-300 leading-relaxed">
                 <CheckCircle2 size={16} className="text-fuchsia-400 mt-0.5 shrink-0" />
-                Developed interactive data visualization reports to translate raw transactional datasets into clear, executive-ready performance metrics.
+                Developed interactive data visualization reports to translate raw transactional datasets into clear, executive-ready performance metrics, simulating a 15% reduction in reporting time.
               </li>
               <li className="flex items-start gap-3 text-sm text-zinc-300 leading-relaxed">
                 <CheckCircle2 size={16} className="text-fuchsia-400 mt-0.5 shrink-0" />
@@ -545,46 +546,82 @@ function Experience() {
 /* ------------------------------------------------------------------ */
 /* Projects                                                            */
 /* ------------------------------------------------------------------ */
-function ProjectCard({ p, idx }) {
+function ProjectCard({ p, idx, expandedProject, setExpandedProject }) {
+  const isExpanded = expandedProject === p.id;
+
   return (
     <Reveal delay={idx * 0.08}>
       <GlowCard className="h-full flex flex-col group/card">
-        {/* Project Image Header */}
-        <div className="h-48 w-full bg-[#0b0510] border-b border-white/10 overflow-hidden relative">
-          {p.image ? (
-            <img src={p.image} alt={p.title} className="w-full h-full object-cover opacity-70 group-hover/card:opacity-100 group-hover/card:scale-105 transition-all duration-500" />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-zinc-700 font-mono text-sm">
-              <Terminal size={24} className="mr-2" /> script_running.py
-            </div>
-          )}
-          <div className="absolute top-4 left-4">
-            <span className="font-mono text-xs text-purple-300 bg-purple-900/60 backdrop-blur-md px-2.5 py-1 rounded-md border border-purple-500/30">
+        <div className="p-7 flex flex-col flex-grow">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-xl font-medium text-white leading-snug group-hover/card:text-purple-300 transition-colors">
+              {p.title}
+            </h4>
+            <span className="font-mono text-xs text-purple-300 bg-purple-900/60 backdrop-blur-md px-2.5 py-1 rounded-md border border-purple-500/30 shrink-0 ml-4">
               {p.tag}
             </span>
           </div>
-        </div>
-
-        {/* Project Details */}
-        <div className="p-7 flex flex-col flex-grow">
-          <h4 className="text-xl font-medium text-white mb-3 leading-snug group-hover/card:text-purple-300 transition-colors">{p.title}</h4>
+          
           <p className="text-zinc-400 text-sm leading-relaxed mb-6">{p.description}</p>
+          
+          <ul className="space-y-2 mb-6 border-l border-white/5 pl-4">
+            {p.points.map((pt, pIdx) => (
+              <li key={pIdx} className="text-xs text-zinc-500 flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-purple-400" />
+                {pt}
+              </li>
+            ))}
+          </ul>
+
           <div className="flex flex-wrap gap-2 mb-6 mt-auto">
             {p.stack.map((t) => (
               <Badge key={t}>{t}</Badge>
             ))}
           </div>
           
-          {/* UPDATED BUTTON: Direct GitHub Link */}
-          <div className="mt-auto flex items-center pt-4 border-t border-white/5">
-            <a 
-              href={p.github} 
-              target="_blank" 
-              rel="noreferrer" 
-              className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-lg bg-white/[0.05] hover:bg-purple-500/20 text-white transition-colors border border-white/5 hover:border-purple-500/30 z-20"
-            >
-              <Github size={16} /> View on GitHub
-            </a>
+          {/* Action Buttons Interface */}
+          <div className="mt-auto flex flex-col pt-4 border-t border-white/5">
+            <div className="flex items-center gap-3">
+              <a 
+                href={p.github} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-lg bg-white/[0.05] hover:bg-purple-500/20 text-white transition-colors border border-white/5 hover:border-purple-500/30 z-20"
+              >
+                <Github size={16} /> View on GitHub
+              </a>
+              {p.image && (
+                <button 
+                  onClick={() => setExpandedProject(isExpanded ? null : p.id)}
+                  className={`inline-flex items-center gap-1.5 text-sm px-4 py-2 rounded-lg font-mono transition-all duration-300 z-20 border ${
+                    isExpanded 
+                      ? "bg-purple-600/30 text-purple-300 border-purple-500/50" 
+                      : "bg-transparent text-zinc-400 border-white/10 hover:text-white hover:border-white/20"
+                  }`}
+                >
+                  <BarChart3 size={16} />
+                  {isExpanded ? "Hide Workspace" : "View Dashboard"}
+                </button>
+              )}
+            </div>
+
+            {/* Smooth Dynamic Expanding Sliding Dashboard Frame */}
+            {p.image && (
+              <div 
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                  isExpanded ? "max-h-[700px] opacity-100 mt-6" : "max-h-0 opacity-0 mt-0"
+                }`}
+              >
+                <div className="rounded-xl border border-white/10 bg-black/40 overflow-hidden shadow-2xl relative group/img">
+                  <img 
+                    src={p.image} 
+                    alt={`${p.title} Environment Dashboard`} 
+                    className="w-full h-auto object-cover opacity-90 group-hover/img:opacity-100 transition-opacity duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0510]/80 via-transparent to-transparent pointer-events-none" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </GlowCard>
@@ -593,6 +630,8 @@ function ProjectCard({ p, idx }) {
 }
 
 function Projects() {
+  const [expandedProject, setExpandedProject] = useState(null);
+
   return (
     <section id="projects" className="py-28 relative">
       <div className="max-w-6xl mx-auto px-6">
@@ -604,19 +643,26 @@ function Projects() {
             Featured Architecture
           </h3>
         </Reveal>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 items-start">
           {PROJECTS.map((p, idx) => (
-            <ProjectCard key={p.id} p={p} idx={idx} />
+            <ProjectCard 
+              key={p.id} 
+              p={p} 
+              idx={idx} 
+              expandedProject={expandedProject}
+              setExpandedProject={setExpandedProject}
+            />
           ))}
         </div>
       </div>
     </section>
   );
 }
+
 /* ------------------------------------------------------------------ */
 /*  Certifications                                                      */
 /* ------------------------------------------------------------------ */
-function Certifications() {
+function Certifications({ setActiveCert }) {
   return (
     <section id="certifications" className="py-28 relative border-t border-white/5">
       <div className="max-w-6xl mx-auto px-6">
@@ -631,7 +677,10 @@ function Certifications() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {CERTIFICATIONS.map((c, idx) => (
             <Reveal key={c.title} delay={idx * 0.08}>
-              <GlowCard className="p-6 h-full flex flex-col justify-between group/cert">
+              <GlowCard 
+                onClick={() => setActiveCert(c.file)}
+                className="p-6 h-full flex flex-col justify-between group/cert cursor-pointer hover:border-purple-500/30 transition-all duration-300"
+              >
                 <div>
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-fuchsia-500/20 border border-purple-500/30 flex items-center justify-center">
@@ -639,12 +688,14 @@ function Certifications() {
                     </div>
                     <span className="text-xs font-mono text-zinc-500 bg-white/5 px-2 py-1 rounded">{c.date}</span>
                   </div>
-                  <h4 className="font-medium text-white mb-2 text-lg leading-snug">{c.title}</h4>
+                  <h4 className="font-medium text-white mb-2 text-lg leading-snug group-hover/cert:text-purple-300 transition-colors">{c.title}</h4>
                   <p className="text-sm text-zinc-400">Issued by: <span className="text-purple-300 font-medium">{c.issuer}</span></p>
                 </div>
                 <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
                   <span className="text-xs font-mono text-zinc-600">ID: {c.code}</span>
-                  <Award size={14} className="text-zinc-600 group-hover/cert:text-purple-400 transition-colors" />
+                  <div className="flex items-center gap-1.5 text-xs text-purple-400 font-mono opacity-0 group-hover/cert:opacity-100 transition-opacity">
+                    Verify <ExternalLink size={12} />
+                  </div>
                 </div>
               </GlowCard>
             </Reveal>
@@ -697,13 +748,13 @@ function Contact() {
                 <div className="text-xs text-zinc-400">github.com/mjunaid777</div>
               </div>
             </a>
-            <a href="https://www.linkedin.com/in/syed-junaid-8657113b1/" target="_blank" rel="noreferrer" className="flex items-center gap-4 p-4 rounded-xl border border-white/10 bg-[#120a1c] hover:border-blue-500/40 transition-colors">
+            <a href="https://www.linkedin.com/in/syed-junaid7" target="_blank" rel="noreferrer" className="flex items-center gap-4 p-4 rounded-xl border border-white/10 bg-[#120a1c] hover:border-blue-500/40 transition-colors">
               <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
                 <Linkedin size={18} className="text-blue-400" />
               </div>
               <div>
                 <div className="text-sm font-medium text-white">LinkedIn</div>
-                <div className="text-xs text-zinc-400">linkedin.com/in/syed-junaid</div>
+                <div className="text-xs text-zinc-400">linkedin.com/in/syed-junaid7</div>
               </div>
             </a>
             <a href="mailto:syedjunaid3786@gmail.com" className="flex items-center gap-4 p-4 rounded-xl border border-white/10 bg-[#120a1c] hover:border-purple-500/40 transition-colors">
@@ -787,7 +838,7 @@ function Footer() {
           <a href="https://github.com/mjunaid777" target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
             <Github size={18} />
           </a>
-          <a href="https://www.linkedin.com/in/syed-junaid-8657113b1/" target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-blue-400 transition-colors">
+          <a href="https://www.linkedin.com/in/syed-junaid7" target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-blue-400 transition-colors">
             <Linkedin size={18} />
           </a>
           <a href="mailto:syedjunaid3786@gmail.com" className="text-zinc-500 hover:text-purple-400 transition-colors">
@@ -827,6 +878,7 @@ function useActiveSection(ids) {
 export default function Portfolio() {
   useFonts();
   const active = useActiveSection(["hero", ...NAV_LINKS.map((l) => l.id)]);
+  const [activeCert, setActiveCert] = useState(null);
 
   return (
     <div
@@ -868,9 +920,34 @@ export default function Portfolio() {
       <Skills />
       <Experience />
       <Projects />
-      <Certifications />
+      <Certifications setActiveCert={setActiveCert} />
       <Contact />
       <Footer />
+
+      {/* --- VERIFIED CREDENTIALS POP-UP MODAL OVERLAY --- */}
+      {activeCert && (
+        <div 
+          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 backdrop-blur-sm transition-all duration-300"
+          onClick={() => setActiveCert(null)}
+        >
+          <div 
+            className="relative max-w-4xl w-full sj-modal-in bg-[#120a1c] p-2 rounded-2xl border border-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setActiveCert(null)}
+              className="absolute -top-12 right-0 text-zinc-400 hover:text-white text-sm font-mono flex items-center gap-1 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5 transition-colors"
+            >
+              <X size={16} /> Close Esc
+            </button>
+            <img 
+              src={activeCert} 
+              alt="Verified Educational Credential Document" 
+              className="w-full h-auto rounded-xl shadow-2xl border border-white/5"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
