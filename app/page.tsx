@@ -356,7 +356,7 @@ function Hero() {
         <Reveal delay={0.25}>
           <div className="flex flex-wrap gap-4 mb-16">
             <a
-              href="/Syed_Junaid_Resume.pdf"
+              href="/Syed_Junaid_Resume_Final.pdf"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-purple-600 text-white font-medium hover:bg-purple-500 transition-colors shadow-lg shadow-purple-600/30"
